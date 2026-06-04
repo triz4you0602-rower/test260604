@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(Start-Process \"http://localhost:8501\")"
+      "PowerShell(Start-Process \"http://localhost:8501\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
