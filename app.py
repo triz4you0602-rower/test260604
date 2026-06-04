@@ -5,8 +5,25 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title='홈앤쇼핑 일일 매출 현황', layout='wide')
 
-df = pd.read_csv('data/sales.csv')
-df['date'] = pd.to_datetime(df['date'])
+def load_sales_data():
+    try:
+        from supabase import create_client, Client
+        url = st.secrets.get("supabase", {}).get("url")
+        key = st.secrets.get("supabase", {}).get("key")
+        if url and key:
+            supabase = create_client(url, key)
+            response = supabase.table('sales').select('*').execute()
+            df = pd.DataFrame(response.data)
+            df['date'] = pd.to_datetime(df['date'])
+            return df
+    except Exception as e:
+        st.warning(f"Supabase 연결 실패: {e}. CSV 파일을 사용합니다.")
+
+    df = pd.read_csv('data/sales.csv')
+    df['date'] = pd.to_datetime(df['date'])
+    return df
+
+df = load_sales_data()
 
 today = df['date'].max()
 yesterday = today - pd.Timedelta(days=1)
