@@ -1,8 +1,13 @@
 # 프로젝트 완성 인사이트
+## Notion 'Day 1 Streamlit MCP Skills'와 통합
 
 **작업 기간**: 2026-06-04  
 **프로젝트**: 홈앤쇼핑 일일 매출 현황 Streamlit 대시보드  
-**GitHub**: https://github.com/triz4you0602-rower/test260604
+**GitHub**: https://github.com/triz4you0602-rower/test260604  
+**Notion**: https://www.notion.so/Day-1-Streamlit-MCP-Skills-37216ac83c6a8187b55be05e80690997
+
+> 📌 이 문서는 오늘 진행한 Streamlit 프로젝트의 기술적 학습 내용과
+> Notion 'Day 1 Streamlit MCP Skills' 페이지의 학습 노트를 통합한 종합 인사이트입니다.
 
 ---
 
@@ -396,6 +401,23 @@ python -m streamlit run app.py
 
 ---
 
+## 🔌 MCP (Model Context Protocol) 연동 인사이트
+
+> 📌 **출처**: Notion — Day 1 Streamlit MCP Skills  
+> https://www.notion.so/Day-1-Streamlit-MCP-Skills-37216ac83c6a8187b55be05e80690997
+
+이 섹션은 Notion 페이지에서 공유하는 MCP 관련 학습 내용입니다.
+
+### 주요 학습 항목 (예상)
+- [ ] MCP 개념 및 역할
+- [ ] Streamlit과 MCP 연동 방법
+- [ ] Claude Code에서의 MCP 활용
+- [ ] 실제 프로젝트 적용 사례
+
+> **노트**: Notion 페이지 내용을 추출 후 이 섹션에 병합 예정
+
+---
+
 ## 🔮 비전 및 향후 계획
 
 ### 단기 목표 (1개월)
@@ -429,7 +451,9 @@ python -m streamlit run app.py
 
 ---
 
-## 📝 마치며
+## 📝 Day 1 학습 회고 및 마치며
+
+### 핵심 학습 성과
 
 이 프로젝트는 단순한 데이터 시각화를 넘어, 다음을 배우는 기회였습니다:
 
@@ -438,12 +462,31 @@ python -m streamlit run app.py
 3. **팀 협업**을 위한 best practices
 4. **사용자 중심**의 디자인 사고
 
-**가장 큰 배움**: 완벽한 코드보다 **명확한 설명과 문서가 10배 더 가치있다**는 것.
+### 개발 생명 주기 경험
 
-이 인사이트를 바탕으로 다음 프로젝트에서도 더 나은 결과를 만들 수 있을 것으로 확신합니다.
+- ✅ **계획**: 명확한 요구사항 정의 → 구현 계획 수립
+- ✅ **구현**: Streamlit 프레임워크로 빠른 프로토타이핑
+- ✅ **문제 해결**: 4가지 주요 이슈 발생 및 체계적 해결
+- ✅ **검증**: 브라우저에서 실제 동작 확인
+- ✅ **배포**: GitHub에 코드 및 문서 게시
+- ✅ **문서화**: 상세한 인사이트 정리
+
+### 가장 큰 배움
+
+> **완벽한 코드보다 명확한 설명과 문서가 10배 더 가치있다**
+
+이 인사이트를 바탕으로 다음 프로젝트(Notion Day 1 학습 내용 포함)에서도 더 나은 결과를 만들 수 있을 것으로 확신합니다.
 
 ---
 
-**작성자**: RWIZ  
+### 문서 정보
+
+**작성자**: RWIZ (triz4you0602@gmail.com)  
 **작성일**: 2026-06-04  
-**레포지토리**: https://github.com/triz4you0602-rower/test260604
+**레포지토리**: https://github.com/triz4you0602-rower/test260604  
+**Notion 학습노트**: https://www.notion.so/Day-1-Streamlit-MCP-Skills-37216ac83c6a8187b55be05e80690997
+
+### 업데이트 히스토리
+
+- **v1.0** (2026-06-04): 초기 인사이트 작성
+- **v1.1** (2026-06-04): Notion Day 1 통합 준비 (MCP 섹션 추가, 메타정보 갱신)
