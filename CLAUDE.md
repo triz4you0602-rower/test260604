@@ -40,7 +40,7 @@ taskkill /F /IM python.exe
 **Supabase 설정:**
 - 로컬 비밀은 `.streamlit/secrets.toml`(gitignore 처리됨)에 들어가며, Streamlit Cloud 비밀은 앱의 Settings → Secrets에서 설정합니다
 - 테이블: `sales`, 컬럼은 `id, date, category, product, broadcast_time, sales, orders, host, created_at`
-- 배포된 앱은 `anon` 역할로 읽으므로 `GRANT SELECT ON public.sales TO anon;`이 필요합니다 — "permission denied for table sales"는 이 권한이 누락되었다는 의미입니다
+- 앱은 `anon` 역할로 읽습니다. `public.sales`에는 RLS가 활성화되어 있고 공개 읽기 정책("Public read access", anon/authenticated에 SELECT 허용) + `GRANT SELECT`가 적용되어 있습니다 — anon 키로 읽기는 가능하지만 쓰기/수정/삭제는 차단됩니다 (마이그레이션 `enable_rls_public_read_sales`)
 - `.mcp.json`은 Claude Code에서 DB에 직접 접근하기 위한 Supabase MCP 서버(프로젝트 ref `nqktdzbebjjwhmwnspha`)를 구성합니다
 
 **데이터 규칙:**
@@ -51,7 +51,7 @@ taskkill /F /IM python.exe
 **문서 파일**은 각각 단일 역할을 가집니다(2026-06-11 통합):
 - **SETUP_GUIDE.md** — 활성 실행 가이드: Supabase + AI 요약 + 배포 전체 흐름. 가장 유용한 살아있는 가이드.
 - **TROUBLESHOOTING.md** — 단일 문제 해결 레퍼런스(구 DEPENDENCY_ISSUE.md / Plotly 가이드를 흡수, Day 2 함정 표 포함).
-- **ROADMAP_DAY2.md** — 진행 중인 Day 2 로드맵/트래커(Notion 2일차 커리큘럼 기반). 단계 0·1 완료, 2 부분, 3(중복 방지)·4(주간 리포트 스킬)·5(깃허브)는 미착수.
+- **ROADMAP_DAY2.md** — 진행 중인 Day 2 로드맵/트래커(Notion 2일차 커리큘럼 기반, 단계 번호는 노션 섹션 제목 0~5 기준). 단계 0·1·2 완료, 3(Supabase+중복방지) 부분, 5(깃허브) 푸시 완료, 4(주간 리포트 스킬) 미착수.
 - **WORKFLOW_VISUAL_GUIDE.md** — 동결된 Day-1 스냅샷; 아키텍처 다이어그램 / ASCII 플로우차트의 정본.
 - **INSIGHTS.md** — 동결된 Day-1 학습 회고(코드 통계와 수치는 2026-06-04 기준이며 의도적으로 갱신하지 않음).
 
