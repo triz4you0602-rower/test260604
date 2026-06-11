@@ -1,6 +1,12 @@
 # 프로젝트 완성 인사이트
 ## Notion 'Day 1 Streamlit MCP Skills'와 통합
 
+> 🧊 **동결 문서 (Day 1 스냅샷, 2026-06-04 기준)**
+> 이 문서는 Day 1 학습 회고로, 작성 시점의 상태를 보존합니다. 코드 통계(줄 수,
+> 파일 수 등)와 매출 수치는 그 시점 기준이며 **갱신하지 않습니다**.
+> 최신 상태는 [CLAUDE.md](CLAUDE.md), 절차는 [SETUP_GUIDE.md](SETUP_GUIDE.md),
+> 문제 해결은 [TROUBLESHOOTING.md](TROUBLESHOOTING.md)를 참조하세요.
+
 **작업 기간**: 2026-06-04  
 **프로젝트**: 홈앤쇼핑 일일 매출 현황 Streamlit 대시보드  
 **GitHub**: https://github.com/triz4you0602-rower/test260604  

@@ -5,10 +5,11 @@
 2. [Phase 1: 초기 설정](#phase-1-초기-설정)
 3. [Phase 2: Supabase 연동](#phase-2-supabase-연동)
 4. [Phase 3: 데이터 동기화](#phase-3-데이터-동기화)
-5. [Phase 4: 배포](#phase-4-배포)
-6. [Phase 5: 권한 설정 및 최적화](#phase-5-권한-설정-및-최적화)
-7. [검증 및 테스트](#검증-및-테스트)
-8. [트러블슈팅](#트러블슈팅)
+5. [Phase 4: AI 요약 기능 (선택)](#phase-4-ai-요약-기능-선택)
+6. [Phase 5: 배포](#phase-5-배포)
+7. [Phase 6: 권한 설정 및 최적화](#phase-6-권한-설정-및-최적화)
+8. [검증 및 테스트](#검증-및-테스트)
+9. [트러블슈팅](#트러블슈팅)
 
 ---
 
@@ -195,7 +196,70 @@ SELECT DISTINCT category FROM sales;
 
 ---
 
-## Phase 4: 배포
+## Phase 4: AI 요약 기능 (선택)
+
+### 4.1 Anthropic API 키 설정
+
+**목적**: "오늘 매출 AI 요약" 버튼으로 Claude를 통한 경영진용 요약 생성
+
+#### 4.1.1 API 키 획득
+
+1. [Anthropic API 콘솔](https://console.anthropic.com)에 접속
+2. API Keys → Create Key
+3. 생성된 키 복사 (예: `sk-ant-...`)
+
+#### 4.1.2 로컬 secrets 설정
+
+`.streamlit/secrets.toml`에 추가:
+
+```toml
+[anthropic]
+api_key = "sk-ant-..."
+```
+
+**또는 환경변수 설정:**
+
+```bash
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
+```
+
+### 4.2 기능 설명
+
+**UI 구성**:
+- 기준일 선택 드롭다운 (selectbox)
+- "오늘 매출 AI 요약" 버튼
+
+**버튼 클릭 시 동작**:
+1. 선택한 기준일의 매출 데이터 수집
+   - 카테고리별 매출, 주문수
+   - 상위 5개 방송 정보
+   - 전일 대비 변화율
+2. Claude Opus 4.8로 한국어 경영진용 요약 생성
+3. 스트리밍으로 실시간 표시
+
+**에러 처리**:
+- API 키 없음 → 친절한 설정 가이드 표시
+- 인증 실패 → 키 확인 안내
+- 네트워크 오류 → 재시도 안내
+
+### 4.3 requirements.txt 업데이트
+
+```txt
+streamlit>=1.28.0
+pandas>=1.3.0
+plotly>=5.0.0
+supabase>=2.0.0
+anthropic>=0.9.0
+```
+
+설치:
+```bash
+pip install anthropic
+```
+
+---
+
+## Phase 5: 배포
 
 ### 4.1 GitHub에 커밋
 
@@ -205,7 +269,7 @@ git commit -m "Integrate Supabase with Streamlit dashboard and verify real-time 
 git push origin master
 ```
 
-### 4.2 Streamlit Cloud 배포
+### 5.2 Streamlit Cloud 배포
 
 **단계:**
 1. [share.streamlit.io](https://share.streamlit.io) 접속
@@ -220,9 +284,9 @@ https://test260604-pcyo6o9mflydsgcr4i7owy.streamlit.app/
 
 ---
 
-## Phase 5: 권한 설정 및 최적화
+## Phase 6: 권한 설정 및 최적화
 
-### 5.1 중요: Supabase 권한 설정
+### 6.1 중요: Supabase 권한 설정
 
 **문제**: 배포 앱이 "permission denied for table sales" 에러 발생
 
@@ -249,7 +313,7 @@ REFERENCES
 TRIGGER
 ```
 
-### 5.2 Streamlit Cloud Secrets 설정 (선택사항)
+### 6.2 Streamlit Cloud Secrets 설정 (선택사항)
 
 배포 앱에서 Supabase를 직접 사용하려면:
 
@@ -355,40 +419,22 @@ def load_sales_data():
 
 ## 최종 아키텍처
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    사용자 (Browser)                      │
-└─────────────────────────────────────────────────────────┘
-                          ↓
-┌─────────────────────────────────────────────────────────┐
-│              Streamlit Cloud (배포)                      │
-│  https://test260604-pcyo6o9mflydsgcr4i7owy.streamlit.app│
-└─────────────────────────────────────────────────────────┘
-                          ↓
-        ┌─────────────────────────────────┐
-        ↓                                 ↓
-    ┌────────────┐              ┌──────────────────┐
-    │ Supabase   │◄─────────────│  Streamlit App   │
-    │ PostgreSQL │  실시간 읽기  │  (CSV 폴백)     │
-    └────────────┘              └──────────────────┘
-        ↑                                 ↑
-        │                                 │
-        └─────────── CSV 동기화 ──────────┘
-```
-
-**데이터 흐름:**
+**데이터 흐름 요약:**
 1. Supabase 우선: 클라우드 DB에서 직접 읽기
 2. 폴백: Supabase 실패 시 CSV 파일 사용
 3. 실시간: Supabase 변경사항 즉시 반영
+
+> 📐 전체 아키텍처 다이어그램과 Phase별 ASCII 플로우차트는
+> [WORKFLOW_VISUAL_GUIDE.md](WORKFLOW_VISUAL_GUIDE.md)에 있습니다 (시각 자료 정본).
 
 ---
 
 ## 요약: 단계별 설정 체크리스트
 
 ### 로컬 개발 환경 구성
-- [ ] requirements.txt에 supabase 추가
-- [ ] .streamlit/secrets.toml 생성
-- [ ] app.py에 Supabase 연동 코드 추가
+- [x] requirements.txt에 supabase 추가
+- [x] .streamlit/secrets.toml 생성
+- [x] app.py에 Supabase 연동 코드 추가
 - [ ] 로컬에서 `streamlit run app.py` 테스트
 
 ### Supabase 설정
@@ -397,17 +443,24 @@ def load_sales_data():
 - [ ] CSV 데이터 삽입
 - [ ] GRANT SELECT ON public.sales TO anon 실행
 
+### Anthropic API 설정 (선택)
+- [x] .streamlit/secrets.toml에 anthropic 섹션 추가
+- [x] API 키 설정 완료
+- [ ] "오늘 매출 AI 요약" 버튼 테스트
+
 ### 배포
 - [ ] GitHub에 코드 커밋 (secrets.toml 제외)
 - [ ] Streamlit Cloud에서 배포
 - [ ] 배포 앱 URL 확인
 - [ ] 권한 설정 후 배포 앱 재로드
+- [ ] Streamlit Cloud Secrets 설정 (Anthropic 포함)
 
 ### 검증
 - [ ] 로컬 앱: Supabase 데이터 표시
 - [ ] 배포 앱: Supabase 데이터 표시
 - [ ] 실시간 동기화: 데이터 수정 후 즉시 반영
 - [ ] 경고 메시지: 없음 (정상)
+- [ ] AI 요약: 버튼 클릭 후 스트리밍 응답
 
 ---
 
@@ -435,4 +488,13 @@ d89a256 - Integrate Notion 'Day 1 Streamlit MCP Skills' into INSIGHTS
 
 **작성일**: 2026-06-04  
 **최종 상태**: ✅ 완벽하게 작동 중  
-**실시간 동기화**: ✅ Supabase 및 배포 앱 모두 작동
+**실시간 동기화**: ✅ Supabase 및 배포 앱 모두 작동  
+
+---
+
+## 📝 업데이트 이력
+
+### 2026-06-11
+- ✅ Phase 4 추가: Anthropic API 설정 및 "오늘 매출 AI 요약" 기능
+- ✅ requirements.txt에 `anthropic>=0.9.0` 추가
+- ✅ 체크리스트 업데이트 (Anthropic API 설정 포함)
